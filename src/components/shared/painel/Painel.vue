@@ -12,7 +12,7 @@
 
 <script>
 export default {
-  props: ["titulo"],
+  props: ["titulo"], //O componente filho (neste caso Painel.vue) não pode referenciar diretamente dados do pai (Home.vue), porém para utilizar os dados do pai, eu utilizo "props". Assim eu digo exatamente o que o filho espera utilizar do pai.
 
   data() {
     return {

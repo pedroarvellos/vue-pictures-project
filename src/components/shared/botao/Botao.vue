@@ -1,0 +1,68 @@
+<template>
+  <button v-on:click="disparaAcao()" class="botao" v-bind:class="estiloBotao" v-bind:type="tipo">{{ rotulo }}</button> <!-- No vue.js se eu coloco duas classes (uma com e outra sem bind), o vue incrementa os dois valores em uma class só. Fiz isto porque a clase botao é default para todos os botoes, entao é desnecessário eu ficar enviando do computed toda vez esta classe-->
+</template>
+<script>
+export default {
+  props: {
+    tipo: {
+      required: true,
+      type: String
+    },
+
+    rotulo: {
+      required: true,
+      type: String
+    },
+
+    confirmacao: {
+      required: false,
+      default: false,
+      type: Boolean
+    },
+
+    estilo: {
+      required: false,
+      default: "padrao",
+      type: String
+    }
+  },
+
+  methods: {
+    disparaAcao() {
+      if (this.confirmacao) {
+        if (confirm("Confirma Operação?")) {
+          this.$emit("botaoAtivado"); //este $emit permite que eu dispare um evento botaoAtivado.
+        }
+        return;
+      } //pelo this. eu consigo acessar uma prop.
+      this.$emit("botaoAtivado"); //este $emit permite que eu dispare um evento botaoAtivado.
+    }
+  },
+
+  computed: {
+    estiloBotao() {
+      if (this.estilo == "padrao" || !this.estilo) return "botao-padrao"; //ele atende esta condição se o valor for 'padrao' ou se não mandou nada por estilo.
+      if (this.estilo == "perigo") return "botao-perigo";
+    }
+  }
+};
+</script>
+<style>
+.botao {
+  display: inline-block;
+  padding: 10px;
+  border-radius: 3px;
+  margin: 10px;
+  font-size: 1.2em;
+}
+
+.botao-perigo {
+  background: firebrick;
+  color: white;
+}
+
+.botao-padrao {
+  background: darkcyan;
+  color: white;
+}
+</style>

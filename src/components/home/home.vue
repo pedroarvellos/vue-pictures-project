@@ -7,12 +7,12 @@
     <ul class="lista-fotos">
       <li class="lista-fotos-item" v-for="foto of fotosComfiltro" :key="foto.url">
           <!-- Quando ele chega aqui, ele percebe que deve trocar esta notação pelo Painel que foi declarado (meu-painel, foi declarado em components como um "apelido" para Painel). Como ele vai trocar esta tag pelo tag Painel, tudo que tiver aqui dentro, ao menos que exita um "slot", será descartado. -->
-          <meu-painel :titulo="foto.titulo">
-          <imagem-responsiva :url="foto.url" :titulo="foto.titulo">
-            
-          </imagem-responsiva>
+          <meu-painel v-bind:titulo="foto.titulo">
+            <imagem-responsiva v-meu-transform.animate.reverse="360" v-bind:url="foto.url" v-bind:titulo="foto.titulo"/>  
+            <meu-botao tipo="button" rotulo="REMOVER" :confirmacao= "true" estilo="perigo" v-on:botaoAtivado="remover(foto)"/> <!-- Atenção, não estou fazendo data binding aqui, estou passando direto a STRING com o botao para os parametros mencionados-->
+            <!--Por que este .native? Não tem nenhuma especificação dentro do meu componente Botao.vue de um evento disparado, por isto, não adianta eu simplesmente escrever @click ou v-onclick, sendo assim, eu forço ele a executar este evento mesmo sem especificá-lo no componente. -->
+            <!--Atenção, se eu estou passando um valor direto para Botao através de confirmacao que será um prop que existirá lá, por que eu não faço como nos outros e coloco sem o v-bind? Porque se eu mandar sem v-bind, ele envia o valor como String, e quando eu verificar lá no Botao no método para ver se preciso confirmar, ele vai ser verdadeiro, porque quando eu faço um if em alguma string, só dá falso se não tiver nada. Então quando eu uso o v-bind antes de enviar, ele analisa o que está sendo enviado e seta o tipo dele, neste caso ele perceberá que é um boleano. Eu só passo o valor sem o v-bind quando eu quero receber ele como String.-->
           </meu-painel>
-        <!--Quando é atributo eu não posso fazer simplesmente a interpolação, como neste caso, que tenho os atributos da img. Neste caso, eu preciso fazer um v-bind (caso não queira escrever v-bind, posso apenas colocar : antes. -->
       </li>
     </ul>
   </div>
@@ -21,11 +21,13 @@
 <script>
 import Painel from "../shared/painel/Painel.vue";
 import ImagemResponsiva from "../shared/imagem-responsiva/ImagemResponsiva.vue";
+import Botao from "../shared/botao/Botao.vue";
 
 export default {
   components: {
     "meu-painel": Painel,
-    "imagem-responsiva": ImagemResponsiva
+    "imagem-responsiva": ImagemResponsiva,
+    "meu-botao": Botao
   },
 
   data() {
@@ -54,6 +56,12 @@ export default {
       // } else {
       //   return this.fotos;
       // }
+    }
+  },
+
+  methods: {
+    remover(foto) {
+      alert("Remover a foto: " + foto.titulo);
     }
   },
 

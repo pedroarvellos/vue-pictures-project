@@ -5,6 +5,7 @@ import VueResource from 'vue-resource'; //Estou importando o meu vue-resource qu
 import VueRouter from 'vue-router';
 import { routes } from './routes'; //Com o auxílio do VueRouter, eu vou passar as rotas configuradas de routes para ele, e ele vai me devolver um roteador que será usado pela minha aplicação.
 //Quando dentro do componente eu não uso export default, como dentro das páginas vue, eu preciso colocar '{}'
+import './directives/Transform';
 
 Vue.use(VueResource); //Estou agora dizendo para o VUE utilizar do meu pacote. 
 Vue.use(VueRouter);

@@ -2,7 +2,7 @@
   <img class="imagem-responsiva" v-bind:src="url" v-bind:alt="titulo">
 </template>
 
-<<script>
+<script>
 export default {
   props: ["url", "titulo"]
 }
