@@ -8,7 +8,7 @@
       <li class="lista-fotos-item" v-for="foto of fotosComfiltro" :key="foto.url">
           <!-- Quando ele chega aqui, ele percebe que deve trocar esta notação pelo Painel que foi declarado (meu-painel, foi declarado em components como um "apelido" para Painel). Como ele vai trocar esta tag pelo tag Painel, tudo que tiver aqui dentro, ao menos que exita um "slot", será descartado. -->
           <meu-painel v-bind:titulo="foto.titulo">
-            <imagem-responsiva v-meu-transform.animate.reverse="360" v-bind:url="foto.url" v-bind:titulo="foto.titulo"/>  
+            <imagem-responsiva v-meu-transform:scale.animate="1.1" v-bind:url="foto.url" v-bind:titulo="foto.titulo"/>  
             <meu-botao tipo="button" rotulo="REMOVER" :confirmacao= "true" estilo="perigo" v-on:botaoAtivado="remover(foto)"/> <!-- Atenção, não estou fazendo data binding aqui, estou passando direto a STRING com o botao para os parametros mencionados-->
             <!--Por que este .native? Não tem nenhuma especificação dentro do meu componente Botao.vue de um evento disparado, por isto, não adianta eu simplesmente escrever @click ou v-onclick, sendo assim, eu forço ele a executar este evento mesmo sem especificá-lo no componente. -->
             <!--Atenção, se eu estou passando um valor direto para Botao através de confirmacao que será um prop que existirá lá, por que eu não faço como nos outros e coloco sem o v-bind? Porque se eu mandar sem v-bind, ele envia o valor como String, e quando eu verificar lá no Botao no método para ver se preciso confirmar, ele vai ser verdadeiro, porque quando eu faço um if em alguma string, só dá falso se não tiver nada. Então quando eu uso o v-bind antes de enviar, ele analisa o que está sendo enviado e seta o tipo dele, neste caso ele perceberá que é um boleano. Eu só passo o valor sem o v-bind quando eu quero receber ele como String.-->
@@ -23,11 +23,17 @@ import Painel from "../shared/painel/Painel.vue";
 import ImagemResponsiva from "../shared/imagem-responsiva/ImagemResponsiva.vue";
 import Botao from "../shared/botao/Botao.vue";
 
+import Transform from "../../directives/Transform.js"
+
 export default {
   components: {
     "meu-painel": Painel,
     "imagem-responsiva": ImagemResponsiva,
     "meu-botao": Botao
+  },
+
+  directives: { //definindo minhas diretivas que serão utilizadas. 
+    'meu-transform': Transform
   },
 
   data() {
@@ -80,7 +86,9 @@ export default {
       //usando arrow funciton (provindo do ES6)
       .then(res => res.json()) //Então eu chamo a função THEN, e digo que ele ele vai me devolver a resposta que veio do servidor (res), e digo para ele converter esta resposta para json. Ele apenas transforma os dados retornados em json.
       .then(
-        minhaListaDeFotos => (this.fotos = minhaListaDeFotos),
+        minhaListaDeFotos => {
+          this.fotos = minhaListaDeFotos
+          },
         err => console.log(err)
       ); //eu pego a minha lista de fotos que vem da minha promise (que agora foi transformada em json), e digo que a minha lista de fotos do meu compomente data vai receber as fotos que estão vindo do servidor.
   }
