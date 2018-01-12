@@ -11,15 +11,7 @@
 </template>
 <script>
 export default {
-
     props: ["rotas"]
-
-    // props: { Eu poderia fazer assim, por exemplo, definir validações dentro da minha prop.  
-    //     rotas: {
-    //         type:Array,
-    //         required: true
-    //     }
-    // }
 }
 </script>    
 

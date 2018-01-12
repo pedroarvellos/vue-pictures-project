@@ -8,6 +8,7 @@ import { routes } from './routes'; //Com o auxílio do VueRouter, eu vou passar 
 import './directives/Transform';
 
 Vue.use(VueResource); //Estou agora dizendo para o VUE utilizar do meu pacote. 
+Vue.http.options.root = 'http://localhost:3000'//estou definindo o meu endereço raiz que será utilizando por default pelo meu http.
 Vue.use(VueRouter);
 
 const router = new VueRouter({

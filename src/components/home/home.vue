@@ -2,7 +2,8 @@
   <div>
     <h1 class="centralizado">{{ titulo }}</h1>
     
-    <input type="search" class="filtro" v-on:input = "filtro = $event.target.value" placeholder="filtre pelo título"/> <!-- Toda vez que o evento este evento v-on é disparado, ele executa da seguinte forma: pega filtro que é uma variável declarada dentro do meu data, e ele vai receber $event (objeto do vue.js), .target significa que é quem disparou o evento, e o value é o valor inserido. Resumindo, quando este evento é disparado, é colocado dentro do filtro o que está sendo digitado dinamicamente. Toda vez que estou digitando ele vai rodando este evento.-->
+    <p class="centralizado">{{ mensagem }}</p>
+    <input type="search" class="filtro" v-on:input = "filtro = $event.target.value" placeholder="filtre pelo título"/> <!-- Toda vez que o evento este evento v-on:input é disparado, ele executa da seguinte forma: pega filtro que é uma variável declarada dentro do meu data, e ele vai receber $event (objeto do vue.js), .target significa que é quem disparou o evento, e o value é o valor inserido. Resumindo, quando este evento é disparado, é colocado dentro do filtro o que está sendo digitado dinamicamente. Toda vez que estou digitando ele vai rodando este evento.-->
     {{ filtro }}
     <ul class="lista-fotos">
       <li class="lista-fotos-item" v-for="foto of fotosComfiltro" :key="foto.url">
@@ -23,7 +24,7 @@ import Painel from "../shared/painel/Painel.vue";
 import ImagemResponsiva from "../shared/imagem-responsiva/ImagemResponsiva.vue";
 import Botao from "../shared/botao/Botao.vue";
 
-import Transform from "../../directives/Transform.js"
+import Transform from "../../directives/Transform.js";
 
 export default {
   components: {
@@ -32,15 +33,17 @@ export default {
     "meu-botao": Botao
   },
 
-  directives: { //definindo minhas diretivas que serão utilizadas. 
-    'meu-transform': Transform
+  directives: {
+    //definindo minhas diretivas que serão utilizadas.
+    "meu-transform": Transform
   },
 
   data() {
     return {
       titulo: "Alurapic",
       fotos: [],
-      filtro: ""
+      filtro: "",
+      mensagem: ""
     };
   },
 
@@ -67,30 +70,46 @@ export default {
 
   methods: {
     remover(foto) {
-      alert("Remover a foto: " + foto.titulo);
+      // this.$http.delete('v1/fotos/' + foto._id)//fotos da API dele tem _id como padrão.
+
+      this.resource
+        .delete({ id: foto._id }) //neste caso eu uso uma requisição utilizando o método dele e uso como parâmetro o ID desta foto.
+        .then(
+          () => {
+            let indice = this.fotos.indexOf(foto); //estou pegando a posição da minha foto no meu índice de fotos e em baixo removendo. Não tem necessidade de eu fazer mais uma requisição aqui e ir na API pegar dados, quanto mais eu evitar isto, melhor. Então vale a pena eu apenas remover da lista.
+            this.fotos.splice(indice, 1);
+            this.mensagem = "Foto removida com sucesso";
+          },
+          err => {
+            //repare, neste caso da arrow function, eu abri um bloco (chaves), isto porque minha segunda função tem duas instruções.
+            console.log(err);
+            this.mensagem = "Não foi possível remover foto";
+          }
+        );
     }
   },
 
+  //O método created é executado assim que meu componente é criado. Então neste caso, ele já executa o query para trazer as imagens e cria o meu componente resource para utilizar neste componente pelos outros métodos resource http.
   created() {
-    this.$http
-      .get("http://localhost:3000/v1/fotos") //HTTP executa o método GET para este endereço. Este cara vai me retornar uma promise, e nesta promise, toda vez que eu quiser obter um resultado dela, eu tenho que fazer através da chamada da função THEN.
-      // //exemplo sem usar arrow function
-      // .then(function (res) {
-      // return res.json()})
-      // .then(function (minhaListaDeFotos) {
-      //   this.fotos = minhaListaDeFotos
-      // }), function (err) {
-      //   console.log(err)
-      // }
-
-      //usando arrow funciton (provindo do ES6)
+    this.resource = this.$resource("v1/fotos{/id}"); ///id é um parâmetro do meu recurso. Ele roda este parâmetro só quando for chamado, como é chamado no id, por exemplo. O nome do parâmetro no DELETE, o parâmetro é chamado com seu nome, isto é, id.
+    this.resource
+      .query() //query aqui equivale a uma requisição utilizando o método GET para este endereço do resurce. resource.query() é o GET.
       .then(res => res.json()) //Então eu chamo a função THEN, e digo que ele ele vai me devolver a resposta que veio do servidor (res), e digo para ele converter esta resposta para json. Ele apenas transforma os dados retornados em json.
       .then(
         minhaListaDeFotos => {
-          this.fotos = minhaListaDeFotos
-          },
+          this.fotos = minhaListaDeFotos;
+        },
         err => console.log(err)
-      ); //eu pego a minha lista de fotos que vem da minha promise (que agora foi transformada em json), e digo que a minha lista de fotos do meu compomente data vai receber as fotos que estão vindo do servidor.
+      );
+    // //exemplo sem usar arrow function
+    // .then(function (res) {
+    // return res.json()})
+    // .then(function (minhaListaDeFotos) {
+    //   this.fotos = minhaListaDeFotos
+    // }), function (err) {
+    //   console.log(err)
+    // }
+    //eu pego a minha lista de fotos que vem da minha promise (que agora foi transformada em json), e digo que a minha lista de fotos do meu compomente data vai receber as fotos que estão vindo do servidor.
   }
 };
 </script>

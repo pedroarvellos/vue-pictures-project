@@ -52,8 +52,15 @@ export default {
 
   methods: {
     grava() {
-      this.foto = new Foto();
-    }
+      this.resource
+      .save(this.foto)
+      .then(() => this.foto = new Foto(), err => console.log(err)); //se minha requisição for bem sucedida eu não recebo nada, e eu executo minha função que vai colocar uma foto nova (para limpar o formulário). Se der um erro eu vou logar no console o erro.
+   }
+  },
+
+  //quando o componente é criado ele já executa o que tem dentro.
+  created() {
+    this.resource = this.$resource("v1/fotos");
   }
 }
 </script>
