@@ -1,8 +1,8 @@
-# y
+# vue-pictures-project
 
-> y
+That's a showcase project implemented with the goal to demonstrate domain and good practices of the vue.js framework. This project has as focus set a list of images and perform dynamism as of them. The API for this project was provided by Alura. 
 
-## Build Setup
+#### Build Setup
 
 ``` bash
 # install dependencies
