@@ -1,6 +1,6 @@
 # vue-pictures-project
 
-That's a showcase project implemented with the goal to demonstrate domain and good practices of the vue.js framework. This project has as focus set a list of images and perform dynamism as of them. This project and the API for this project was provided by Alura. 
+That's a showcase project implemented with the goal to demonstrate domain and good practices of the vue.js framework. This project has as focus set a list of images and perform dynamism as of them. This project was developed during the Vue.js course of Alura and the API for this project was provided by Alura. 
 
 #### Build Setup
 
