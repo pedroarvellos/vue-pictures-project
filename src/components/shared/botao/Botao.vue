@@ -31,17 +31,17 @@ export default {
     disparaAcao() {
       if (this.confirmacao) {
         if (confirm("Confirma Operação?")) {
-          this.$emit("botaoAtivado"); //este $emit permite que eu dispare um evento botaoAtivado.
+          this.$emit("botaoAtivado"); 
         }
         return;
-      } //pelo this. eu consigo acessar uma prop.
-      this.$emit("botaoAtivado"); //este $emit permite que eu dispare um evento botaoAtivado.
+      }
+      this.$emit("botaoAtivado"); 
     }
   },
 
   computed: {
     estiloBotao() {
-      if (this.estilo == "padrao" || !this.estilo) return "botao-padrao"; //ele atende esta condição se o valor for 'padrao' ou se não mandou nada por estilo.
+      if (this.estilo == "padrao" || !this.estilo) return "botao-padrao";
       if (this.estilo == "perigo") return "botao-perigo";
     }
   }

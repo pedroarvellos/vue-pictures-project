@@ -1,7 +1,6 @@
 <template>
   <div class="corpo">
-    <meu-menu :rotas="routes"/> <!--Estou passando o dado routes para "rotas" em Menu, para que ele possa usar este dado do pai.-->
-    <!-- hora tem que exibir um componente, hora outro. De acordo com a rota que for acessada a minha aplicação. -->
+    <meu-menu :rotas="routes"/>
     <transition name="pagina">
       <router-view></router-view>
     </transition>
@@ -39,6 +38,6 @@ export default {
 } 
 
 .pagina-enter-active, .pagina-leave-active {
-    transition: opacity .4s; /*.4s = 400 milisegundos, 4s = 2 segundos*/
+    transition: opacity .4s; 
 } 
 </style>
